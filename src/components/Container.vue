@@ -33,7 +33,7 @@
     </v-navigation-drawer>
     <v-app-bar app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>SAB</v-toolbar-title>
+      <v-toolbar-title>2021 졸업 작품 스마트 홈</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn small color="error" ripple @click.native="logoutAction">
         <v-icon>exit_to_app</v-icon>
@@ -46,7 +46,7 @@
       </v-container>
     </v-content>
     <v-footer app>
-      <span>&copy; 2021 SAB</span>
+      <span>&copy; 2021 졸업 작품 </span>
     </v-footer>
   </div>
 </template>
@@ -115,12 +115,12 @@ export default {
           {
             icon: 'keyboard_arrow_down',
             'icon-alt': 'watch',
-            text: '예약/배차',
+            text: '값조회',
             model: true,
             children: [
-              {icon: 'import_contacts', text: '***', toRoute: ''},
-              {icon: 'attach_money', text: '***', toRoute: ''},
-              {icon: 'schedule', text: '***', toRoute: ''},
+              {icon: 'import_contacts', text: '전체 조회', toRoute: '/allRoom'},
+              {icon: 'attach_money', text: '방별 조회', toRoute: ''},
+              //{icon: 'schedule', text: '***', toRoute: ''},
             ],
           },
           {
