@@ -5,9 +5,8 @@
         <!-- 조회 섹션 START -->
         <v-card class="mb-3">
           <v-toolbar flat dense>
-            <v-toolbar-title>전체 방 조회</v-toolbar-title>
+            <v-toolbar-title>각 방 조회</v-toolbar-title>
             <v-spacer></v-spacer>
-            <label class="mx-4"> 건수 : {{ items.length }}</label>
             <v-btn outlined class="mx-4" @click="newDialog()">
               <v-icon>note_add</v-icon>
               임직원 추가
@@ -121,15 +120,200 @@
         </v-dialog>
         <!-- 등록 modal dialog END -->
         <!-- data table List START -->
-        <v-card>
-          <v-data-table :headers="headers" :items="items" :items-per-page="-1" @click:row="selectDetail"
-                        :hide-default-footer="true">
-            <template v-slot:item.empMobile="{ value }">
-              {{ common.convertPhoneString(value) }}
-            </template>
+        <template>
+          <v-row>
+            <v-col>
+              <v-card
+                class="mx-auto"
+                max-width="400"
+              >
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title class="headline">
+                      온도
+                    </v-list-item-title>
+                    <v-list-item-subtitle>측정 시간:</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
 
-          </v-data-table>
-        </v-card>
+                <v-card-text>
+                  <v-row align="center">
+                    <v-col
+                      class="display-3"
+                      cols="6"
+                    >
+                      23&deg;C
+                    </v-col>
+                    <v-col cols="6">
+                      <v-img
+                        src="https://cdn.vuetifyjs.com/images/cards/sun.png"
+                        alt="Sunny image"
+                        width="92"
+                      ></v-img>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+
+<!--                <v-list-item>-->
+<!--                  <v-list-item-icon>-->
+<!--                    <v-icon>mdi-send</v-icon>-->
+<!--                  </v-list-item-icon>-->
+<!--                  <v-list-item-subtitle>23 km/h</v-list-item-subtitle>-->
+<!--                </v-list-item>-->
+
+<!--                <v-list-item>-->
+<!--                  <v-list-item-icon>-->
+<!--                    <v-icon>mdi-cloud-download</v-icon>-->
+<!--                  </v-list-item-icon>-->
+<!--                  <v-list-item-subtitle>48%</v-list-item-subtitle>-->
+<!--                </v-list-item>-->
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-btn text>
+                    Full Report
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+            <v-col>
+              <v-card
+                class="mx-auto"
+                max-width="400"
+              >
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title class="headline">
+                      습도
+                    </v-list-item-title>
+                    <v-list-item-subtitle>측정 시간:</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-card-text>
+                  <v-row align="center">
+                    <v-col
+                      class="display-3"
+                      cols="6"
+                    >
+                      56%
+                    </v-col>
+                    <v-col cols="6">
+                      <v-img
+                        src="https://cdn.vuetifyjs.com/images/cards/sun.png"
+                        alt="Sunny image"
+                        width="92"
+                      ></v-img>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-btn text>
+                    Full Report
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-card
+                class="mx-auto"
+                max-width="400"
+              >
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title class="headline">
+                      미세먼지
+                    </v-list-item-title>
+                    <v-list-item-subtitle>측정 시간:</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-card-text>
+                  <v-row align="center">
+                    <v-col
+                      class="display-2"
+                      cols="6"
+                    >
+                      44㎍/m
+                    </v-col>
+                    <v-col cols="6">
+                      <v-img
+                        src="https://cdn.vuetifyjs.com/images/cards/sun.png"
+                        alt="Sunny image"
+                        width="92"
+                      ></v-img>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-btn text>
+                    Full Report
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+            <v-col>
+              <v-card
+                class="mx-auto"
+                max-width="400"
+              >
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title class="headline">
+                      가스
+                    </v-list-item-title>
+                    <v-list-item-subtitle>측정 시간:</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+
+                <v-card-text>
+                  <v-row align="center">
+                    <v-col
+                      class="display-3"
+                      cols="6"
+                    >
+                      23&deg;C
+                    </v-col>
+                    <v-col cols="6">
+                      <v-img
+                        src="https://cdn.vuetifyjs.com/images/cards/sun.png"
+                        alt="Sunny image"
+                        width="92"
+                      ></v-img>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-btn text>
+                    Full Report
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </template>
+<!--        <v-card>-->
+<!--          <v-data-table :headers="headers" :items="items" :items-per-page="-1" @click:row="selectDetail"-->
+<!--                        :hide-default-footer="true">-->
+<!--            <template v-slot:item.empMobile="{ value }">-->
+<!--              {{ common.convertPhoneString(value) }}-->
+<!--            </template>-->
+
+<!--          </v-data-table>-->
+<!--        </v-card>-->
         <!-- data table List END -->
       </v-flex>
       <v-snackbar v-model="snackbarItem" top color="error">
