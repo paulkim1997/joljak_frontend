@@ -15,7 +15,7 @@
           <v-toolbar-items>
             <v-row dense class="pl-4 pr-4">
               <v-col md="2" sm="2">
-                <v-text-field prepend-icon="person" v-model="search.roomNo" label="방 번호 검색" clearable></v-text-field>
+                <v-text-field prepend-icon="home" v-model="search.roomNo" label="방 번호 검색" ></v-text-field>
               </v-col>
             </v-row>
           </v-toolbar-items>
@@ -330,7 +330,8 @@ export default {
       },
 
       search: {
-        roomNo: 1
+        roomNo: 1,
+        roomNm: null,
       },
 
       headers: [
