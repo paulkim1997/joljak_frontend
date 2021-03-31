@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import Container from './components/Container.vue'
 
 import Login from './views/Login.vue'
-import AllRoom from './views/admin/EachRoom.vue'
+import AllRoom from './views/admin/AllRoom.vue'
+import EachRoom from './views/admin/EachRoom.vue'
 import CodeList from './views/admin/CodeList.vue'
 import EmpList from './views/admin/EmpList.vue'
 import SvcUserList from './views/admin/SvcUserList.vue'
@@ -24,6 +25,11 @@ export default new VueRouter({
           path: '/allRoom',
           name: '모든 방 조회',
           component: AllRoom
+        },
+        {
+          path: '/eachRoom',
+          name: '방별 조회',
+          component: EachRoom
         },
         {
           path: '/code',

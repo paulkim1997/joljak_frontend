@@ -7,10 +7,6 @@
           <v-toolbar flat dense>
             <v-toolbar-title>각 방 조회</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn outlined class="mx-4" @click="newDialog()">
-              <v-icon>note_add</v-icon>
-              임직원 추가
-            </v-btn>
             <v-btn outlined :loading="loader" @click="getTablesData()">
               <v-icon>search</v-icon>
               조회하기
@@ -19,7 +15,7 @@
           <v-toolbar-items>
             <v-row dense class="pl-4 pr-4">
               <v-col md="2" sm="2">
-                <v-text-field prepend-icon="person" v-model="search.empNm" label="이름 검색" clearable></v-text-field>
+                <v-text-field prepend-icon="person" v-model="search.roomNo" label="방 번호 검색" clearable></v-text-field>
               </v-col>
             </v-row>
           </v-toolbar-items>
@@ -125,14 +121,14 @@
             <v-col>
               <v-card
                 class="mx-auto"
-                max-width="400"
+                max-width="500"
               >
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title class="headline">
                       온도
                     </v-list-item-title>
-                    <v-list-item-subtitle>측정 시간:</v-list-item-subtitle>
+                    <v-list-item-subtitle>측정 시간: {{ information.measureTime }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
 
@@ -142,7 +138,7 @@
                       class="display-3"
                       cols="6"
                     >
-                      23&deg;C
+                      {{ information.temp }}&deg;C
                     </v-col>
                     <v-col cols="6">
                       <v-img
@@ -154,19 +150,6 @@
                   </v-row>
                 </v-card-text>
 
-<!--                <v-list-item>-->
-<!--                  <v-list-item-icon>-->
-<!--                    <v-icon>mdi-send</v-icon>-->
-<!--                  </v-list-item-icon>-->
-<!--                  <v-list-item-subtitle>23 km/h</v-list-item-subtitle>-->
-<!--                </v-list-item>-->
-
-<!--                <v-list-item>-->
-<!--                  <v-list-item-icon>-->
-<!--                    <v-icon>mdi-cloud-download</v-icon>-->
-<!--                  </v-list-item-icon>-->
-<!--                  <v-list-item-subtitle>48%</v-list-item-subtitle>-->
-<!--                </v-list-item>-->
 
                 <v-divider></v-divider>
 
@@ -180,14 +163,14 @@
             <v-col>
               <v-card
                 class="mx-auto"
-                max-width="400"
+                max-width="500"
               >
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title class="headline">
                       습도
                     </v-list-item-title>
-                    <v-list-item-subtitle>측정 시간:</v-list-item-subtitle>
+                    <v-list-item-subtitle>측정 시간: {{ information.measureTime }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
 
@@ -197,7 +180,7 @@
                       class="display-3"
                       cols="6"
                     >
-                      56%
+                      {{ information.hum }}%
                     </v-col>
                     <v-col cols="6">
                       <v-img
@@ -224,14 +207,14 @@
             <v-col>
               <v-card
                 class="mx-auto"
-                max-width="400"
+                max-width="500"
               >
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title class="headline">
                       미세먼지
                     </v-list-item-title>
-                    <v-list-item-subtitle>측정 시간:</v-list-item-subtitle>
+                    <v-list-item-subtitle>측정 시간: {{ information.measureTime }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
 
@@ -241,7 +224,7 @@
                       class="display-2"
                       cols="6"
                     >
-                      44㎍/m
+                      {{ information.dust }}㎍/m
                     </v-col>
                     <v-col cols="6">
                       <v-img
@@ -265,24 +248,23 @@
             <v-col>
               <v-card
                 class="mx-auto"
-                max-width="400"
+                max-width="500"
               >
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title class="headline">
                       가스
                     </v-list-item-title>
-                    <v-list-item-subtitle>측정 시간:</v-list-item-subtitle>
+                    <v-list-item-subtitle>측정 시간: {{ information.measureTime }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
-
                 <v-card-text>
                   <v-row align="center">
                     <v-col
                       class="display-3"
                       cols="6"
                     >
-                      23&deg;C
+                      {{ information.gas }}
                     </v-col>
                     <v-col cols="6">
                       <v-img
@@ -348,10 +330,7 @@ export default {
       },
 
       search: {
-        empId: null,
-        empNm: null,
-        empMobileNo: null,
-        status: '정상'
+        roomNo: 1
       },
 
       headers: [
@@ -364,6 +343,16 @@ export default {
         {text: '입사일', value: 'joinDate', align: 'center'},
         {text: '계정잠김', value: 'lockYn', align: 'center'},
         {text: '상태', value: 'status', align: 'center'},
+      ],
+
+      information: [
+        {
+          measureTime: null,
+          temp: null,
+          gas: null,
+          hum: null,
+          dust: null
+        }
       ],
 
       items: [],
@@ -393,6 +382,14 @@ export default {
         pwd: null,
         position: null,
         authority: null,
+        roomNo:null,
+        roomNm:null,
+        temp:null,
+        hum:null,
+        gas:null,
+        dust:null,
+        light:null,
+        measureTime:null,
         joinDate: this.$moment(new Date()).format('YYYY-MM-DD'),
         retireDate: null,
         initUrl: '/code',
@@ -452,10 +449,15 @@ export default {
       this.loader = true
       //this.search.compCd = localStorage.compCd
       let sendSearchItem = this.search
-      const response = await this.$http.get('user/selEmpList', {params: sendSearchItem})
+      const response = await this.$http.get('room/selRoomInf', {params: sendSearchItem})
       const articleList = response.data.articleList
       console.log(articleList)
       this.items = articleList
+      this.information.measureTime = articleList[0].measureTime
+      this.information.temp = articleList[0].temp
+      this.information.hum = articleList[0].hum
+      this.information.dust = articleList[0].dust
+      this.information.gas = articleList[0].gas
       this.loader = false
     },
 

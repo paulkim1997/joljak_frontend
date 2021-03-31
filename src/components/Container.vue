@@ -118,8 +118,8 @@ export default {
             text: '값조회',
             model: true,
             children: [
-              {icon: 'import_contacts', text: '전체 조회', toRoute: '/allRoom'},
-              {icon: 'attach_money', text: '방별 조회', toRoute: ''},
+              {icon: 'home', text: '방별 조회', toRoute: '/eachRoom'},
+              {icon: 'home', text: '전체 조회', toRoute: '/allRoom'},
               //{icon: 'schedule', text: '***', toRoute: ''},
             ],
           },
