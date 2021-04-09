@@ -129,7 +129,7 @@ export default {
             text: 'IoT 디바이스 원격 조종',
             model: true,
             children: [
-              {icon: 'local_taxi', text: '***', toRoute: ''},
+              {icon: 'monitor', text: '***', toRoute: ''},
             ],
           },
           {
@@ -139,13 +139,10 @@ export default {
             model: true,
             children: [
               {icon: 'accessibility', text: '임직원', toRoute: '/emp'},
-              {icon: 'airline_seat_recline_normal', text: '***', toRoute: ''},
+              {icon: 'vpn_key', text: '비밀번호 변경하기', toRoute: '/changePwd'},
               {icon: 'account_circle', text: '서비스사용자', toRoute: '/svcUser'},
-              {icon: 'autorenew', text: '***', toRoute: ''},
-              {icon: 'drive_eta', text: '***', toRoute: ''},
               {icon: 'code', text: '공통코드', toRoute: '/code'},
               {icon: 'announcement', text: '***', toRoute: '/notice'},
-              {icon: 'question_answer', text: '***', toRoute: ''},
             ],
           },
         ]

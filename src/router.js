@@ -7,6 +7,7 @@ import AllRoom from './views/admin/AllRoom.vue'
 import EachRoom from './views/admin/EachRoom.vue'
 import CodeList from './views/admin/CodeList.vue'
 import EmpList from './views/admin/EmpList.vue'
+import ChangePwd from './views/admin/ChangePwd.vue'
 import SvcUserList from './views/admin/SvcUserList.vue'
 import NoticeList from './views/admin/NoticeList.vue'
 import FindPwd from "@/views/FindPwd";
@@ -30,6 +31,11 @@ export default new VueRouter({
           path: '/eachRoom',
           name: '방별 조회',
           component: EachRoom
+        },
+        {
+          path: '/changePwd',
+          name: '비밀번호 변경',
+          component: ChangePwd
         },
         {
           path: '/code',
