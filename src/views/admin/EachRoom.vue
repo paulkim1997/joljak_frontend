@@ -21,100 +21,6 @@
           </v-toolbar-items>
         </v-card>
         <!-- 조회 섹션 END -->
-        <!-- 등록 modal dialog START -->
-        <v-dialog v-model="editDialog" persistent max-width="800px">
-          <v-card>
-            <v-form ref="inputForm" lazy-validation>
-              <v-flex style="display:none;">
-                <v-text-field v-model="editItem.compCd"></v-text-field>
-              </v-flex>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="6">
-                      <v-text-field :rules="rules.requireRules" v-model="editItem.empId" label="*임직원ID"
-                                    requird></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field :rules="rules.requireRules" v-model="editItem.empNm" label="*임직원명" requird
-                                    clearable></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="6">
-                      <v-text-field :rules="rules.requireRules" v-model="editItem.empMobile" label="*핸드폰번호" requird
-                                    clearable></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field :rules="rules.requireRules" v-model="editItem.pwd" label="*비밀번호" requird
-                                    type="password" clearable></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="6">
-                      <v-text-field v-model="editItem.position" label="직위" clearable></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field :rules="rules.requireRules" v-model="editItem.authority" label="권한" requird
-                                    clearable></v-text-field>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="6">
-                      <v-menu v-model="picker.date1" :close-on-content-click="false"
-                              transition="scale-transition" offset-y full-width min-width="290px">
-                        <template v-slot:activator="{ on }">
-                          <v-text-field v-model="editItem.joinDate" prepend-icon="event" readonly v-on="on"
-                                        label="*입사일"></v-text-field>
-                        </template>
-                        <v-date-picker :rules="rules.requireRules" v-model="editItem.joinDate" no-title
-                                       @input="picker.date1 = false" show-current></v-date-picker>
-                      </v-menu>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-menu v-model="picker.date2" :close-on-content-click="false" transition="scale-transition"
-                              offset-y full-width min-width="290px">
-                        <template v-slot:activator="{ on }">
-                          <v-text-field v-model="editItem.retireDate" prepend-icon="event" readonly clearable v-on="on"
-                                        label="퇴사일"></v-text-field>
-                        </template>
-                        <v-date-picker v-model="editItem.retireDate" no-title @input="picker.date2 = false"
-                                       show-current></v-date-picker>
-                      </v-menu>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="6">
-                      <v-select v-model="editItem.initUrl" :items="selectInitUrl" label="로그인 후 초기화면"></v-select>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-select v-model="editItem.listCnt" :items="selectPagePerCount" label="페이지당 갯수"></v-select>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="6">
-                      <v-select v-model="editItem.lockYn" :items="selectListBoolean" label="계정잠김여부"></v-select>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-select :rules="rules.requireRules" v-model="editItem.status" :items="selectListStatus"
-                                label="상태"></v-select>
-                    </v-col>
-                    <v-text-field v-model="editItem.chkStatus" requird type="hidden"></v-text-field>
-                  </v-row>
-                </v-container>
-                <small>*는 필수 항목 입니다.</small>
-              </v-card-text>
-            </v-form>
-            <v-card-actions>
-              <v-btn v-if="insertYn=='UPDATE'" color="red lighten-2" outlined @click.native="deleteContents()">삭제
-              </v-btn>
-              <v-spacer></v-spacer>
-              <v-btn color="warning" outlined @click.native="dialogClose()">닫기</v-btn>
-              <v-btn color="primary" outlined @click.native="save()">저장</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <!-- 등록 modal dialog END -->
         <!-- data table List START -->
         <template>
           <v-row>
@@ -142,7 +48,7 @@
                     </v-col>
                     <v-col cols="6">
                       <v-img
-                        src="https://cdn.vuetifyjs.com/images/cards/sun.png"
+                        :src="common.getImages('temp')"
                         alt="Sunny image"
                         width="92"
                       ></v-img>
@@ -155,7 +61,7 @@
 
                 <v-card-actions>
                   <v-btn text>
-                    Full Report
+                    이전 기록 보기
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -184,7 +90,7 @@
                     </v-col>
                     <v-col cols="6">
                       <v-img
-                        src="https://cdn.vuetifyjs.com/images/cards/sun.png"
+                        :src="common.getImages('hum')"
                         alt="Sunny image"
                         width="92"
                       ></v-img>
@@ -197,7 +103,7 @@
 
                 <v-card-actions>
                   <v-btn text>
-                    Full Report
+                    이전 기록 보기
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -228,7 +134,7 @@
                     </v-col>
                     <v-col cols="6">
                       <v-img
-                        src="https://cdn.vuetifyjs.com/images/cards/sun.png"
+                        :src="common.getImages('dust')"
                         alt="Sunny image"
                         width="92"
                       ></v-img>
@@ -240,7 +146,7 @@
 
                 <v-card-actions>
                   <v-btn text>
-                    Full Report
+                    이전 기록 보기
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -268,7 +174,7 @@
                     </v-col>
                     <v-col cols="6">
                       <v-img
-                        src="https://cdn.vuetifyjs.com/images/cards/sun.png"
+                        :src="common.getImages('gas')"
                         alt="Sunny image"
                         width="92"
                       ></v-img>
@@ -280,23 +186,13 @@
 
                 <v-card-actions>
                   <v-btn text>
-                    Full Report
+                    이전 기록 보기
                   </v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
           </v-row>
         </template>
-<!--        <v-card>-->
-<!--          <v-data-table :headers="headers" :items="items" :items-per-page="-1" @click:row="selectDetail"-->
-<!--                        :hide-default-footer="true">-->
-<!--            <template v-slot:item.empMobile="{ value }">-->
-<!--              {{ common.convertPhoneString(value) }}-->
-<!--            </template>-->
-
-<!--          </v-data-table>-->
-<!--        </v-card>-->
-        <!-- data table List END -->
       </v-flex>
       <v-snackbar v-model="snackbarItem" top color="error">
         {{ snackbarText }}

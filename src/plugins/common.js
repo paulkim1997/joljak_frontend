@@ -176,6 +176,21 @@ function getChannelImageName(code) {
   return ''
 }
 
+function getImages(code) {
+  if(code == 'temp') {
+    return 'images/thermometer.png'
+  }
+  if(code =='hum') {
+    return 'images/humidity.png'
+  }
+  if(code == 'dust') {
+    return 'images/dust.png'
+  }
+  if(code == 'gas') {
+    return 'images/gas.png'
+  }
+}
+
 function addComma(num) {
   if (!num) {
     num = 0
@@ -338,6 +353,7 @@ export default {
   abbreviateString,
   abbreviateString2,
   getChannelImageName,
+  getImages,
 
   saveFile
 }

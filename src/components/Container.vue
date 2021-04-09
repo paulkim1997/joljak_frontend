@@ -115,7 +115,7 @@ export default {
           {
             icon: 'keyboard_arrow_down',
             'icon-alt': 'watch',
-            text: '값조회',
+            text: '집 환경 확인',
             model: true,
             children: [
               {icon: 'home', text: '방별 조회', toRoute: '/eachRoom'},
@@ -126,7 +126,7 @@ export default {
           {
             icon: 'keyboard_arrow_down',
             'icon-alt': 'directions_car',
-            text: '차량',
+            text: 'IoT 디바이스 원격 조종',
             model: true,
             children: [
               {icon: 'local_taxi', text: '***', toRoute: ''},
@@ -135,7 +135,7 @@ export default {
           {
             icon: 'keyboard_arrow_down',
             'icon-alt': 'home',
-            text: '관리자',
+            text: '관리자 옵션',
             model: true,
             children: [
               {icon: 'accessibility', text: '임직원', toRoute: '/emp'},
