@@ -47,6 +47,7 @@ export default {
         return
       }
       localStorage.loginPw = this.loginPw
+      localStorage.loginId = this.loginId
       const response = await this.$http.post("/auth/empSignIn", {empId: this.loginId, pwd: this.loginPw})
       console.log("response.data", response.data)
       if (response.data.result) {

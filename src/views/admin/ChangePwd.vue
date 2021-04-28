@@ -28,13 +28,40 @@
               </v-card-text>
             </v-form>
             <v-card-actions>
-
               <v-spacer></v-spacer>
               <v-btn color="warning" outlined @click.native="dialogClose()">닫기</v-btn>
-              <v-btn color="primary" outlined @click.native="check()">확인</v-btn>
+              <v-btn color="primary" outlined @click.native="checkPw()">확인</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
+
+
+        <v-dialog v-model="editDialog2" persistent max-width="800px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">비밀번호 변경하기</span>
+            </v-card-title>
+            <v-form ref="inputForm" lazy-validation>
+              <v-card-text>
+                <v-form ref="passwordForm" lazy-validation>
+                  <v-text-field required :rules="passwordRules" v-model="password" label="비밀번호(영문 숫자 특수문자포함 8~12자)"
+                                ref="password" prepend-icon="lock" type="password" :disabled="isValid"></v-text-field>
+                  <v-text-field required :rules="checkPasswordRules" v-model="checkPassword" label="비밀번호 확인"
+                                ref="checkPassword" prepend-icon="lock" type="password"
+                                :disabled="isValid"></v-text-field>
+                </v-form>
+              </v-card-text>
+            </v-form>
+            <v-card-actions>
+
+              <v-spacer></v-spacer>
+              <v-btn color="warning" outlined @click.native="dialogClose2()">닫기</v-btn>
+              <v-btn color="primary" outlined @click.native="changePassword()">확인</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+
       </v-flex>
       <v-snackbar v-model="snackbarItem" top color="error">
         {{ snackbarText }}
@@ -57,9 +84,22 @@ export default {
       common,
       rules,
       loginPw: '',
+      passwordRules: [
+        v => !!v || '비밀번호를 입력해주세요.',
+        v => /^.*(?=^.{8,12}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/.test(v) ||
+          '비밀번호는 영어,숫자,특수문자 포함 8~12자로 설정해주세요.'
+      ],
+      checkPasswordRules: [
+        v => !!v || '비밀번호 확인을 위해 한번더 입력해주세요.',
+        v => this.password === this.checkPassword || '비밀번호가 일치하지 않습니다.'
+      ],
+      password: '',
+      checkPassword: '',
+      isValid: false,
 
       loader: true,
       editDialog: false,
+      editDialog2: false,
 
       insertYn: '',
 
@@ -167,16 +207,71 @@ export default {
         this.$refs.inputForm.resetValidation()
       }
     },
-    async check() {
-      if(this.loginPw === localStorage.loginPw) {
-        alert("12321#");
 
+    newDialog2() {
+      this.insertYnUpdate('INSERT')
+      this.editDialog2 = true
+      this.editItem = Object.assign({}, this.defaultItem)
+
+      if (this.$refs.inputForm) {
+        this.$refs.inputForm.resetValidation()
       }
     },
+
+    //비밀번호 검증
+    async checkPw() {
+      if(this.loginPw === localStorage.loginPw) {
+        this.dialogClose()
+        this.newDialog2()
+      } else {
+        alert("비밀번호가 올바르지 않습니다. 다시 확인해주세요")
+      }
+    },
+
+    //비밀번호 변경하기
+    async changePassword() {
+      let sendItem = {}
+      //where절에 들어갈 key값
+      sendItem.empId = localStorage.loginId
+      sendItem.verNo = this.originItem.verNo
+      sendItem.chkStatus = this.originItem.status
+      const response = await this.$http.post("/user/changePw", sendItem).catch(err => {
+        return 'ERR' // axios 요청의 .catch에서 return 을 하면 updateItem 의 return 이 아니라 await this.$http.post 의 리턴값이라는것에 유의 response 에 "ERR" 이 들어간다.
+      })
+      return response
+    },
+
+    // async changePassword() {
+    //   if (!this.$refs.passwordForm.validate()) return;
+    //   this.$http.defaults.headers["Authorization"] = this.expireJwt;
+    //   const response = await this.$http.post("/auth/changePassword", {
+    //     userId: this.userId,
+    //     pwd: this.password,
+    //     jwt: this.expireJwt
+    //   })
+    //   console.log("response.data", response.data)
+    //   if (response.data.result) {
+    //     alert("비밀번호가 성공적으로 변경되었습니다.");
+    //     this.reset();
+    //   } else {
+    //     alert(response.data.message);
+    //   }
+    // },
+    // reset() {
+    //   this.$refs.passwordForm.reset();
+    // },
+    //
+    // nextField() {
+    //   this.$refs.checkPassword.focus()
+    // },
 
     // 모달 창 닫기
     dialogClose() {
       this.editDialog = false
+      this.editItem = Object.assign({}, this.defaultItem)
+    },
+    dialogClose2() {
+      this.editDialog2 = false
       this.editItem = Object.assign({}, this.defaultItem)
     },
 
