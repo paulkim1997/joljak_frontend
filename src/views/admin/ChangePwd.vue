@@ -17,13 +17,11 @@
         <v-dialog v-model="editDialog" persistent max-width="800px">
           <v-card>
             <v-card-title>
-              <span class="headline">보안을 위해 로그인을 해주세요</span>
+              <span class="headline">보안을 위해 비밀번호를 다시 입력해주세요</span>
             </v-card-title>
             <v-form ref="inputForm" lazy-validation>
               <v-card-text>
                 <v-form ref="loginForm" lazy-validation>
-                  <v-text-field :rules="rules.requireRules" v-model="loginId" label="로그인" ref="login"
-                                prepend-icon="person" type="text" ></v-text-field>
                   <v-text-field :rules="rules.requireRules" v-model="loginPw" label="비밀번호" ref="password"
                                 prepend-icon="lock" type="password"></v-text-field>
                 </v-form>
