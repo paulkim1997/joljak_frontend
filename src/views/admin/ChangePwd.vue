@@ -28,11 +28,10 @@
               </v-card-text>
             </v-form>
             <v-card-actions>
-              <v-btn v-if="insertYn=='UPDATE'" color="red lighten-2" outlined @click.native="deleteContents()">삭제
-              </v-btn>
+
               <v-spacer></v-spacer>
               <v-btn color="warning" outlined @click.native="dialogClose()">닫기</v-btn>
-              <v-btn color="primary" outlined @click.native="save()">확인</v-btn>
+              <v-btn color="primary" outlined @click.native="check()">확인</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -57,6 +56,7 @@ export default {
     return {
       common,
       rules,
+      loginPw: '',
 
       loader: true,
       editDialog: false,
@@ -157,6 +157,7 @@ export default {
       this.loader = false
     },
 
+
     newDialog() {
       this.insertYnUpdate('INSERT')
       this.editDialog = true
@@ -164,6 +165,12 @@ export default {
 
       if (this.$refs.inputForm) {
         this.$refs.inputForm.resetValidation()
+      }
+    },
+    async check() {
+      if(this.loginPw === localStorage.loginPw) {
+        alert("12321#");
+
       }
     },
 

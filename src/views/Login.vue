@@ -46,6 +46,7 @@ export default {
       if (!this.$refs.loginForm.validate()) {
         return
       }
+      localStorage.loginPw = this.loginPw
       const response = await this.$http.post("/auth/empSignIn", {empId: this.loginId, pwd: this.loginPw})
       console.log("response.data", response.data)
       if (response.data.result) {
