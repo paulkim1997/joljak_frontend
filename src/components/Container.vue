@@ -118,7 +118,7 @@ export default {
             text: '집 환경 확인',
             model: true,
             children: [
-              {icon: 'home', text: '방별 조회', toRoute: '/eachRoom'},
+              {icon: 'sensor_door', text: '방별 조회', toRoute: '/eachRoom'},
               {icon: 'home', text: '전체 조회', toRoute: '/allRoom'},
               //{icon: 'schedule', text: '***', toRoute: ''},
             ],
@@ -130,6 +130,15 @@ export default {
             model: true,
             children: [
               {icon: 'monitor', text: '***', toRoute: ''},
+            ],
+          },
+          {
+            icon: 'keyboard_arrow_down',
+            'icon-alt': 'videocam',
+            text: '원격 CCTV 확인',
+            model: true,
+            children: [
+              {icon: 'videocam', text: 'CCTV 보기', toRoute: '/cctv'},
             ],
           },
           {

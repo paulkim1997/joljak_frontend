@@ -10,7 +10,9 @@ import EmpList from './views/admin/EmpList.vue'
 import ChangePwd from './views/admin/ChangePwd.vue'
 import SvcUserList from './views/admin/SvcUserList.vue'
 import NoticeList from './views/admin/NoticeList.vue'
+import Cctv from "./views/admin/Cctv.vue";
 import FindPwd from "@/views/FindPwd";
+
 
 Vue.use(VueRouter)
 let initUrl = localStorage.initUrl || '/login'
@@ -36,6 +38,11 @@ export default new VueRouter({
           path: '/changePwd',
           name: '비밀번호 변경',
           component: ChangePwd
+        },
+        {
+          path: '/cctv',
+          name: 'CCTV 확인',
+          component: Cctv
         },
         {
           path: '/code',
