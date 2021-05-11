@@ -23,7 +23,7 @@
               <v-card-text>
                 <v-form ref="loginForm" lazy-validation>
                   <v-text-field :rules="rules.requireRules" v-model="loginPw" label="비밀번호" ref="password"
-                                prepend-icon="lock" type="password"></v-text-field>
+                                prepend-icon="lock" type="password" @keyup.enter="checkPw"></v-text-field>
                 </v-form>
               </v-card-text>
             </v-form>
@@ -47,7 +47,7 @@
                   <v-text-field required :rules="passwordRules" v-model="password" label="비밀번호(영문 숫자 특수문자포함 8~12자)"
                                 ref="password" prepend-icon="lock" type="password" :disabled="isValid"></v-text-field>
                   <v-text-field required :rules="checkPasswordRules" v-model="checkPassword" label="비밀번호 확인"
-                                ref="checkPassword" prepend-icon="lock" type="password"
+                                ref="checkPassword" prepend-icon="lock" type="password"  @keyup.enter="changePassword"
                                 :disabled="isValid"></v-text-field>
                 </v-form>
               </v-card-text>
@@ -235,9 +235,18 @@ export default {
       sendItem.empId = localStorage.loginId
       sendItem.verNo = this.originItem.verNo
       sendItem.chkStatus = this.originItem.status
+      sendItem.pwd = this.password
       const response = await this.$http.post("/user/changePw", sendItem).catch(err => {
         return 'ERR' // axios 요청의 .catch에서 return 을 하면 updateItem 의 return 이 아니라 await this.$http.post 의 리턴값이라는것에 유의 response 에 "ERR" 이 들어간다.
       })
+      if(response.data.message == "성공")  {
+        alert("변경 성공!")
+        this.$router.push('/eachRoom')
+        localStorage.loginPw = this.password
+
+      } else {
+        alert("변경 실패!")
+      }
       return response
     },
 
