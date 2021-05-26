@@ -18,8 +18,8 @@
         <!-- 등록 modal dialog START -->
         <!-- 등록 modal dialog END -->
         <!-- data table List START -->
-        <v-card height="700px" width="1300px">
-          <iframe height="700px" width="1300px" src="https://klas.kw.ac.kr">
+        <v-card height="510px" width="700px">
+          <iframe height="510px" width="700px" src="http://203.229.55.130:8000/">
 
           </iframe>
         </v-card>

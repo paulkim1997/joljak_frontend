@@ -65,6 +65,8 @@ export default {
         date2: false,
       },
 
+      infoList: null,
+
       search: {
         empId: null,
         empNm: null,
@@ -142,6 +144,18 @@ export default {
     },
 
     // 테이블 리스트 조회
+/*
+    async getTablesData() {
+      this.loader = true
+      //this.search.compCd = localStorage.compCd
+      let sendSearchItem = this.search
+      const response = await this.$http.get('room/selAllRoomInfFb')
+      const articleList = response.data
+      console.log(articleList)
+      this.infoList = articleList
+      this.loader = false
+    },*/
+
     async getTablesData() {
       this.loader = true
       //this.search.compCd = localStorage.compCd

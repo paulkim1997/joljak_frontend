@@ -250,30 +250,6 @@ export default {
       return response
     },
 
-    // async changePassword() {
-    //   if (!this.$refs.passwordForm.validate()) return;
-    //   this.$http.defaults.headers["Authorization"] = this.expireJwt;
-    //   const response = await this.$http.post("/auth/changePassword", {
-    //     userId: this.userId,
-    //     pwd: this.password,
-    //     jwt: this.expireJwt
-    //   })
-    //   console.log("response.data", response.data)
-    //   if (response.data.result) {
-    //     alert("비밀번호가 성공적으로 변경되었습니다.");
-    //     this.reset();
-    //   } else {
-    //     alert(response.data.message);
-    //   }
-    // },
-    // reset() {
-    //   this.$refs.passwordForm.reset();
-    // },
-    //
-    // nextField() {
-    //   this.$refs.checkPassword.focus()
-    // },
-
     // 모달 창 닫기
     dialogClose() {
       this.editDialog = false
