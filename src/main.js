@@ -5,6 +5,9 @@ import vuetify from './plugins/vuetify'
 import router from './router'
 import moment from 'moment'
 import VueMomentJS from 'vue-momentjs'
+import {firestorePlugin} from 'vuefire'
+
+Vue.use(firestorePlugin)
 
 Vue.config.productionTip = false
 

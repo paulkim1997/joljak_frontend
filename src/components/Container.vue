@@ -149,9 +149,6 @@ export default {
             children: [
               {icon: 'accessibility', text: '임직원', toRoute: '/emp'},
               {icon: 'vpn_key', text: '비밀번호 변경하기', toRoute: '/changePwd'},
-              {icon: 'account_circle', text: '서비스사용자', toRoute: '/svcUser'},
-              {icon: 'code', text: '공통코드', toRoute: '/code'},
-              {icon: 'announcement', text: '***', toRoute: '/notice'},
             ],
           },
         ]

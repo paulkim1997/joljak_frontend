@@ -208,6 +208,7 @@ import rules from "../../plugins/rules"
 import router from "../../router"
 import {mask} from 'vue-the-mask'
 import {Money} from 'v-money'
+import {db} from '../../firebase/db'
 
 export default {
   data() {
@@ -242,15 +243,7 @@ export default {
         {text: '상태', value: 'status', align: 'center'},
       ],
 
-      information: [
-        {
-          measureTime: null,
-          temp: null,
-          gas: null,
-          hum: null,
-          dust: null
-        }
-      ],
+      information: [],
 
       items: [],
 
@@ -339,6 +332,7 @@ export default {
       //let empUser = document.querySelector('.empUser');
       //empUser.style.display ='none'
       this.getTablesData()
+      this.read()
     },
 
     // 테이블 리스트 조회
@@ -348,7 +342,7 @@ export default {
       let sendSearchItem = this.search
       const response = await this.$http.get('room/selRoomInf', {params: sendSearchItem})
       const articleList = response.data.articleList
-      console.log(articleList)
+      //console.log(articleList)
       this.items = articleList
       this.information.measureTime = articleList[0].measureTime
       this.information.temp = articleList[0].temp
@@ -522,6 +516,29 @@ export default {
       this.snackbarText = text
       this.snackbarItem = true
     },
+
+    read() {
+      db.collection('rooms').onSnapshot((snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          let infoChange = change.doc.data()
+
+          if (change.type === 'added') {
+            console.log('New information: ', infoChange)
+            if(search.roomNo === infoChange.roomNo) {
+              this.information = infoChange
+            }
+          }
+          if (change.type === 'modified') {
+            console.log('Modified information: ', infoChange)
+            this.information = infoChange
+          }
+          if (change.type === 'removed') {
+            console.log('Removed information: ', infoChange)
+
+          }
+        })
+      })
+    }
 
   },
 

@@ -15,6 +15,7 @@
     "axios": "^0.19.2",
     "cldr-data": "^36.0.0",
     "core-js": "^2.6.11",
+    "firebase": "^8.6.3",
     "jspdf": "^1.5.3",
     "lodash": "^4.17.19",
     "moment": "^2.26.0",
@@ -26,6 +27,7 @@
     "vue-momentjs": "^0.1.2",
     "vue-router": "^3.3.4",
     "vue-the-mask": "^0.11.1",
+    "vuefire": "^2.2.5",
     "vuetify": "^2.3.0",
     "xlsx": "^0.15.6"
   },
