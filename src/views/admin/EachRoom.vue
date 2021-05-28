@@ -521,21 +521,22 @@ export default {
       db.collection('rooms').onSnapshot((snapshot) => {
         snapshot.docChanges().forEach((change) => {
           let infoChange = change.doc.data()
-
-          if (change.type === 'added') {
-            console.log('New information: ', infoChange)
-            if(search.roomNo === infoChange.roomNo) {
+          // if (change.type === 'added') {
+          //   console.log('New information: ', infoChange)
+          //   if(this.search.roomNo === infoChange.roomNo) {
+          //     this.information = infoChange
+          //   }
+          // }
+          if (change.type === 'modified') {
+            console.log('Modified information: ', infoChange)
+            if(this.search.roomNo === infoChange.roomNo) {
               this.information = infoChange
             }
           }
-          if (change.type === 'modified') {
-            console.log('Modified information: ', infoChange)
-            this.information = infoChange
-          }
-          if (change.type === 'removed') {
-            console.log('Removed information: ', infoChange)
-
-          }
+          // if (change.type === 'removed') {
+          //   console.log('Removed information: ', infoChange)
+          //
+          // }
         })
       })
     }
