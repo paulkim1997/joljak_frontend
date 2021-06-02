@@ -8,8 +8,8 @@
             <v-toolbar-title>전체 방 정보 조회</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn outlined :loading="loader" @click="getTablesData()">
-              <v-icon>search</v-icon>
-              조회하기
+              <v-icon>mdi-cached</v-icon>
+              새로고침
             </v-btn>
           </v-toolbar>
 
@@ -376,3 +376,6 @@ export default {
   }
 }
 </script>
+<style>
+  html { overflow-y: auto }
+</style>
