@@ -7,7 +7,7 @@
           <v-toolbar flat dense>
             <v-toolbar-title>각 방 조회</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn outlined :loading="loader" @click="getTablesData()">
+            <v-btn outlined :loading="loader" @click="getFirebaseData()">
               <v-icon>search</v-icon>
               조회하기
             </v-btn>
@@ -185,7 +185,7 @@
                 <v-divider></v-divider>
 
                 <v-card-actions>
-                  <v-btn text>
+                  <v-btn text @click="newDialog()">
                     이전 기록 보기
                   </v-btn>
                 </v-card-actions>
@@ -194,6 +194,35 @@
           </v-row>
         </template>
       </v-flex>
+      <v-dialog persistent v-model="editDialog" max-width="60%">
+        <v-card>
+          <v-card-title>
+            <span class="headline">최근 7일 측정값</span>
+          </v-card-title>
+          <v-card-text>
+            <v-sheet>
+              <v-sparkline
+                :labels="labels"
+                :value="value"
+                :gradient="gradient"
+                :smooth="radius || false"
+                :padding="padding"
+                :line-width="width"
+                :stroke-linecap="lineCap"
+                :gradient-direction="gradientDirection"
+                :fill="fill"
+                :type="type"
+                :auto-line-width="autoLineWidth"
+                auto-draw
+              ></v-sparkline>
+
+            </v-sheet>
+          </v-card-text>
+          <v-btn color="warning" outlined @click.native="dialogClose()">닫기</v-btn>
+        </v-card>
+
+
+      </v-dialog>
       <v-snackbar v-model="snackbarItem" top color="error">
         {{ snackbarText }}
         <v-btn color="" outlined @click="snackbarItem = false">닫기</v-btn>
@@ -210,14 +239,39 @@ import {mask} from 'vue-the-mask'
 import {Money} from 'v-money'
 import {db} from '../../firebase/db'
 
+
+const gradients = [
+  ['#222'],
+  ['#42b3f4'],
+  ['red', 'orange', 'yellow'],
+  ['purple', 'violet'],
+  ['#00c6ff', '#F0F', '#FF0'],
+  ['#f72047', '#ffd200', '#1feaea'],
+]
+
 export default {
   data() {
     return {
+
       common,
       rules,
-
       loader: true,
       editDialog: false,
+
+      //그래프 설정
+      width: 1,
+      radius: 1,
+      padding: 8,
+      lineCap: 'round',
+      gradient: gradients[5],
+      value: [-10, 2, 5, 9, 5, 10, 3],
+      labels: ["6/1","6/2","6/3","6/4","6/5","6/6","6/7"],
+      date: [1,2,3,4,5],
+      gradientDirection: 'top',
+      gradients,
+      fill: false,
+      type: 'trend',
+      autoLineWidth: false,
 
       insertYn: '',
 
@@ -227,7 +281,7 @@ export default {
       },
 
       search: {
-        roomNo: 1,
+        roomNo: "1",
         roomNm: null,
       },
 
@@ -243,7 +297,13 @@ export default {
         {text: '상태', value: 'status', align: 'center'},
       ],
 
-      information: [],
+      information: {
+        temp : null,
+        dust : null,
+        gas : null,
+        hum : null,
+        measureTime : null
+      },
 
       items: [],
 
@@ -297,12 +357,12 @@ export default {
 
   beforeMount() {
     // form 쪽 초기화
-    this.editItem = Object.assign({}, this.defaultItem)
     this.getInitData()
   },
 
   mounted() {
-    this.getTablesData()
+    //this.getTablesData()
+    this.getFirebaseData("1")
   },
 
   beforeUpdate() {
@@ -331,7 +391,7 @@ export default {
 
       //let empUser = document.querySelector('.empUser');
       //empUser.style.display ='none'
-      this.getTablesData()
+      //this.getTablesData()
       this.read()
     },
 
@@ -344,12 +404,32 @@ export default {
       const articleList = response.data.articleList
       //console.log(articleList)
       this.items = articleList
-      this.information.measureTime = articleList[0].measureTime
-      this.information.temp = articleList[0].temp
-      this.information.hum = articleList[0].hum
-      this.information.dust = articleList[0].dust
-      this.information.gas = articleList[0].gas
+
       this.loader = false
+    },
+
+    async getFirebaseData() {
+      db.collection("rooms").where("roomNo","==", this.search.roomNo).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          let check = doc.data().roomNo
+          if(check === this.search.roomNo) {
+            console.log(doc.id, " => ", doc.data());
+            let temp = doc.data().temp
+            this.information.temp = temp
+            let hum =  doc.data().hum
+            this.information.hum = hum
+            let dust = doc.data().dust
+            this.information.dust = dust
+            let gas = doc.data().gas
+            this.information.gas = gas
+            let measureTime = doc.data().measureTime
+            this.information.measureTime = measureTime
+          }
+        })
+      })
+      this.loader = false
+
     },
 
     newDialog() {
