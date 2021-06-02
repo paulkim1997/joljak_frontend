@@ -60,7 +60,7 @@
                 <v-divider></v-divider>
 
                 <v-card-actions>
-                  <v-btn text>
+                  <v-btn text @click="newDialog('temp')">
                     이전 기록 보기
                   </v-btn>
                 </v-card-actions>
@@ -102,7 +102,7 @@
                 <v-divider></v-divider>
 
                 <v-card-actions>
-                  <v-btn text>
+                  <v-btn text @click="newDialog('hum')">
                     이전 기록 보기
                   </v-btn>
                 </v-card-actions>
@@ -145,7 +145,7 @@
                 <v-divider></v-divider>
 
                 <v-card-actions>
-                  <v-btn text>
+                  <v-btn text @click="newDialog('dust')">
                     이전 기록 보기
                   </v-btn>
                 </v-card-actions>
@@ -185,7 +185,7 @@
                 <v-divider></v-divider>
 
                 <v-card-actions>
-                  <v-btn text @click="newDialog()">
+                  <v-btn text @click="newDialog('gas')">
                     이전 기록 보기
                   </v-btn>
                 </v-card-actions>
@@ -194,7 +194,8 @@
           </v-row>
         </template>
       </v-flex>
-      <v-dialog persistent v-model="editDialog" max-width="60%">
+      <!-- 가스 dialog -->
+      <v-dialog persistent v-model="gasDialog" max-width="60%">
         <v-card>
           <v-card-title>
             <span class="headline">최근 7일 측정값</span>
@@ -203,7 +204,7 @@
             <v-sheet>
               <v-sparkline
                 :labels="labels"
-                :value="value"
+                :value="gasValue"
                 :gradient="gradient"
                 :smooth="radius || false"
                 :padding="padding"
@@ -220,8 +221,90 @@
           </v-card-text>
           <v-btn color="warning" outlined @click.native="dialogClose()">닫기</v-btn>
         </v-card>
+      </v-dialog>
+      <!-- 습도 dialog -->
+      <v-dialog persistent v-model="humDialog" max-width="60%">
+        <v-card>
+          <v-card-title>
+            <span class="headline">최근 7일 측정값</span>
+          </v-card-title>
+          <v-card-text>
+            <v-sheet>
+              <v-sparkline
+                :labels="labels"
+                :value="humValue"
+                :gradient="gradient"
+                :smooth="radius || false"
+                :padding="padding"
+                :line-width="width"
+                :stroke-linecap="lineCap"
+                :gradient-direction="gradientDirection"
+                :fill="fill"
+                :type="type"
+                :auto-line-width="autoLineWidth"
+                auto-draw
+              ></v-sparkline>
 
+            </v-sheet>
+          </v-card-text>
+          <v-btn color="warning" outlined @click.native="dialogClose()">닫기</v-btn>
+        </v-card>
+      </v-dialog>
+      <!-- 온도 dialog -->
+      <v-dialog persistent v-model="tempDialog" max-width="60%">
+        <v-card>
+          <v-card-title>
+            <span class="headline">최근 7일 측정값</span>
+          </v-card-title>
+          <v-card-text>
+            <v-sheet>
+              <v-sparkline
+                :labels="labels"
+                :value="tempValue"
+                :gradient="gradient"
+                :smooth="radius || false"
+                :padding="padding"
+                :line-width="width"
+                :stroke-linecap="lineCap"
+                :gradient-direction="gradientDirection"
+                :fill="fill"
+                :type="type"
+                :auto-line-width="autoLineWidth"
+                auto-draw
+              ></v-sparkline>
 
+            </v-sheet>
+          </v-card-text>
+          <v-btn color="warning" outlined @click.native="dialogClose()">닫기</v-btn>
+        </v-card>
+      </v-dialog>
+      <!-- 미세먼지 dialog -->
+      <v-dialog persistent v-model="dustDialog" max-width="60%">
+        <v-card>
+          <v-card-title>
+            <span class="headline">최근 7일 측정값</span>
+          </v-card-title>
+          <v-card-text>
+            <v-sheet>
+              <v-sparkline
+                :labels="labels"
+                :value="dustValue"
+                :gradient="gradient"
+                :smooth="radius || false"
+                :padding="padding"
+                :line-width="width"
+                :stroke-linecap="lineCap"
+                :gradient-direction="gradientDirection"
+                :fill="fill"
+                :type="type"
+                :auto-line-width="autoLineWidth"
+                auto-draw
+              ></v-sparkline>
+
+            </v-sheet>
+          </v-card-text>
+          <v-btn color="warning" outlined @click.native="dialogClose()">닫기</v-btn>
+        </v-card>
       </v-dialog>
       <v-snackbar v-model="snackbarItem" top color="error">
         {{ snackbarText }}
@@ -257,6 +340,10 @@ export default {
       rules,
       loader: true,
       editDialog: false,
+      gasDialog: false,
+      humDialog: false,
+      tempDialog: false,
+      dustDialog: false,
 
       //그래프 설정
       width: 1,
@@ -264,8 +351,11 @@ export default {
       padding: 8,
       lineCap: 'round',
       gradient: gradients[5],
-      value: [-10, 2, 5, 9, 5, 10, 3],
-      labels: ["6/1","6/2","6/3","6/4","6/5","6/6","6/7"],
+      gasValue: [],
+      dustValue: [],
+      humValue: [],
+      tempValue: [],
+      labels: [],
       date: [1,2,3,4,5],
       gradientDirection: 'top',
       gradients,
@@ -363,6 +453,7 @@ export default {
   mounted() {
     //this.getTablesData()
     this.getFirebaseData("1")
+    this.getStatisticsData()
   },
 
   beforeUpdate() {
@@ -408,7 +499,45 @@ export default {
       this.loader = false
     },
 
+    async getStatisticsData() {
+      this.loader = true
+      this.gasValue = []
+      this.dustValue =[]
+      this.humValue =[]
+      this.tempValue = []
+      //this.search.compCd = localStorage.compCd
+      let sendSearchItem = this.search
+      const response = await this.$http.get('room/selRoomStatistics', {params: sendSearchItem})
+      const articleList = response.data.articleList
+      //console.log(articleList)
+
+      for(let i = 0; i < 7; i++) {
+        let days = articleList[i].measureTime
+        let date = new Date(days)
+        let dateFormat = (date.getMonth()+1)+'/'+date.getDate()
+        this.labels.push(dateFormat)
+      }
+
+      for(let i = 0; i < 7; i++) {
+        this.gasValue.push(articleList[i].gasAvg)
+      }
+      for(let i = 0; i < 7; i++) {
+        this.dustValue.push(articleList[i].dustAvg)
+      }
+      for(let i = 0; i < 7; i++) {
+        this.humValue.push(articleList[i].humAvg)
+      }
+      for(let i = 0; i < 7; i++) {
+        this.tempValue.push(articleList[i].tempAvg)
+      }
+
+
+
+      this.loader = false
+    },
+
     async getFirebaseData() {
+      this.getStatisticsData()
       db.collection("rooms").where("roomNo","==", this.search.roomNo).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
@@ -432,10 +561,18 @@ export default {
 
     },
 
-    newDialog() {
+    newDialog(val) {
       this.insertYnUpdate('INSERT')
-      this.editDialog = true
-      this.editItem = Object.assign({}, this.defaultItem)
+
+      if(val == "gas") {
+        this.gasDialog = true
+      } else if(val == "dust") {
+        this.dustDialog = true
+      } else if(val == "hum") {
+        this.humDialog = true
+      } else if(val == "temp") {
+        this.tempDialog = true
+      }
 
       if (this.$refs.inputForm) {
         this.$refs.inputForm.resetValidation()
@@ -445,6 +582,10 @@ export default {
     // 모달 창 닫기
     dialogClose() {
       this.editDialog = false
+      this.gasDialog = false
+      this.humDialog = false
+      this.tempDialog = false
+      this.dustDialog = false;
       this.editItem = Object.assign({}, this.defaultItem)
     },
 
