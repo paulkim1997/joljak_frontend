@@ -17,13 +17,17 @@
         <!-- 조회 섹션 END -->
         <!-- 등록 modal dialog START -->
         <!-- 등록 modal dialog END -->
-        <!-- data table List START -->
-        <v-card height="510px" width="700px">
-          <iframe height="510px" width="700px" src="http://203.229.55.130:8000/">
-
-          </iframe>
-        </v-card>
-        <!-- data table List END -->
+        <!-- iFrame START -->
+<!--        <v-card height="510px" width="700px">-->
+<!--          <iframe height="510px" width="700px" src="http://203.229.55.130:8000/">-->
+<!--          </iframe>-->
+<!--        </v-card>-->
+        <br>
+        <v-btn outlined @click="downloadPhoto()">
+          <v-icon>download</v-icon>
+          최근에 찍힌 사진 다운로드
+        </v-btn>
+        <!-- iFrame END -->
       </v-flex>
       <v-snackbar v-model="snackbarItem" top color="error">
         {{ snackbarText }}
@@ -36,9 +40,11 @@
 <script>
 import common from "../../plugins/common"
 import rules from "../../plugins/rules"
+import {db} from "../../firebase/db"
 import router from "../../router"
 import {mask} from 'vue-the-mask'
 import {Money} from 'v-money'
+import firebase from "firebase/app";
 
 export default {
   data() {
@@ -142,6 +148,27 @@ export default {
       console.log(articleList)
       this.items = articleList
       this.loader = false
+    },
+
+    async downloadPhoto() {
+      let storage = firebase.storage()
+      let storageRef = storage.ref()
+
+      storageRef.child('img/20210605_170350.jpg').getDownloadURL().then(function(url) {
+        // `url` is the download URL for 'images/stars.jpg'
+
+        // This can be downloaded directly:
+        let xhr = new XMLHttpRequest()
+        xhr.responseType = 'blob'
+        xhr.onload = function(event) {
+          let blob = xhr.response
+        }
+        xhr.open('GET', url);
+        xhr.send();
+
+      }).catch(function(error) {
+        // Handle any errors
+      })
     },
 
     newDialog() {

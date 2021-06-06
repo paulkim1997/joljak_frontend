@@ -112,6 +112,7 @@ export default {
 
   mounted() {
     this.getTablesData()
+    this.read()
   },
 
   beforeUpdate() {
@@ -166,6 +167,7 @@ export default {
       this.items = articleList
       this.loader = false
     },
+
 
     newDialog() {
       this.insertYnUpdate('INSERT')

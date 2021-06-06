@@ -7,7 +7,7 @@
           <v-toolbar flat dense>
             <v-toolbar-title>각 방 조회</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn outlined :loading="loader" @click="getFirebaseData()">
+            <v-btn outlined :loading="loader" @click="readRealTime()">
               <v-icon>search</v-icon>
               조회하기
             </v-btn>
@@ -321,6 +321,8 @@ import router from "../../router"
 import {mask} from 'vue-the-mask'
 import {Money} from 'v-money'
 import {db} from '../../firebase/db'
+import firebase from "firebase/app";
+import "firebase/database";
 
 
 const gradients = [
@@ -451,9 +453,8 @@ export default {
   },
 
   mounted() {
-    //this.getTablesData()
-    this.getFirebaseData("1")
     this.getStatisticsData()
+    this.readRealTime()
   },
 
   beforeUpdate() {
@@ -499,6 +500,37 @@ export default {
       this.loader = false
     },
 
+    async readRealTime() {
+      let database = firebase.database()
+      let starCountRef = firebase.database().ref('Rooms')
+      starCountRef.on('value', (snapshot) => {
+        const data = snapshot.val()
+        for(let i=1;i<data.length;i++) {
+          console.log(data[i].room_no)
+          if(this.search.roomNo === data[i].room_no) {
+
+            let temp = data[i].temp
+            this.information.temp = temp
+            let hum =  data[i].hum
+            this.information.hum = hum
+            let dust = data[i].dust
+            this.information.dust = dust
+            let gas = data[i].gas
+            this.information.gas = gas
+            let measureTime = data[i].measureTime
+            this.information.measureTime = measureTime
+          }
+        }
+      })
+
+      // //on() : 계속 변화를 감지해서 읽음.DB내에서 바꿔도 내용을 읽을 수 있다.
+      // this.$firebase.database().ref().child('Rooms').on('value', (sn) => {
+      //   alert("확인")
+      //   console.log(sn)
+      //   console.log(sn.val())
+      // })
+    },
+
     async getStatisticsData() {
       this.loader = true
       this.gasValue = []
@@ -530,8 +562,6 @@ export default {
       for(let i = 0; i < 7; i++) {
         this.tempValue.push(articleList[i].tempAvg)
       }
-
-
 
       this.loader = false
     },
