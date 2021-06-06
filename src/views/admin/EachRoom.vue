@@ -502,7 +502,7 @@ export default {
       starCountRef.on('value', (snapshot) => {
         const data = snapshot.val()
         for(let i=1;i<data.length;i++) {
-          console.log(data[i].room_no)
+          //console.log(data[i].room_no)
           if(this.search.roomNo === data[i].room_no) {
 
             let temp = data[i].temp

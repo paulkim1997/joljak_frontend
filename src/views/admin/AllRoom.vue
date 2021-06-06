@@ -48,6 +48,9 @@ import rules from "../../plugins/rules"
 import router from "../../router"
 import {mask} from 'vue-the-mask'
 import {Money} from 'v-money'
+import {db} from '../../firebase/db'
+import firebase from "firebase/app";
+import "firebase/database";
 
 export default {
   data() {
@@ -75,8 +78,8 @@ export default {
       },
 
       headers: [
-        {text: '방 번호', value: 'roomNo', align: 'center', width:'100px', divider:true},
-        {text: '방 이름', value: 'roomNm', align: 'center', divider:true, sortable: false},
+        {text: '방 번호', value: 'room_no', align: 'center', width:'100px', divider:true},
+        {text: '방 이름', value: 'room_nm', align: 'center', divider:true, sortable: false},
         {text: '온도', value: 'temp', align: 'center', divider:true},
         {text: '습도', value: 'hum', align: 'center', divider:true},
         {text: '미세먼지', value: 'dust', align: 'center', divider:true},
@@ -107,12 +110,12 @@ export default {
   beforeMount() {
     // form 쪽 초기화
     this.editItem = Object.assign({}, this.defaultItem)
-    this.getInitData()
+    //this.getInitData()
   },
 
   mounted() {
-    this.getTablesData()
-    this.read()
+    //this.getTablesData()
+    this.readRealTime()
   },
 
   beforeUpdate() {
@@ -168,6 +171,16 @@ export default {
       this.loader = false
     },
 
+    async readRealTime() {
+      let database = firebase.database()
+      let starCountRef = firebase.database().ref('Rooms')
+      starCountRef.on('value', (snapshot) => {
+        const data = snapshot.val()
+        const articleList = data
+        this.items = articleList
+      })
+      this.loader = false
+    },
 
     newDialog() {
       this.insertYnUpdate('INSERT')
