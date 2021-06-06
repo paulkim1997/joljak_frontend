@@ -7,7 +7,7 @@
           <v-toolbar flat dense>
             <v-toolbar-title>각 방 조회</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn outlined :loading="loader" @click="readRealTime()">
+            <v-btn outlined  @click="readRealTime()">
               <v-icon>search</v-icon>
               조회하기
             </v-btn>
@@ -336,7 +336,7 @@ export default {
 
       common,
       rules,
-      loader: true,
+      loader: false,
       editDialog: false,
       gasDialog: false,
       humDialog: false,

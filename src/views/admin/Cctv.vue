@@ -18,15 +18,62 @@
         <!-- 등록 modal dialog START -->
         <!-- 등록 modal dialog END -->
         <!-- iFrame START -->
-<!--        <v-card height="510px" width="700px">-->
-<!--          <iframe height="510px" width="700px" src="http://203.229.55.130:8000/">-->
-<!--          </iframe>-->
-<!--        </v-card>-->
+        <v-card height="510px" width="700px">
+          <iframe height="510px" width="700px" src="http://203.229.55.130:8000/">
+          </iframe>
+        </v-card>
         <br>
         <v-btn outlined @click="downloadPhoto()">
           <v-icon>download</v-icon>
-          최근에 찍힌 사진 다운로드
+          최근에 찍힌 사진 확인
         </v-btn>
+        <br>
+        <img
+          id="myimg1"
+          src=""
+          height="300"
+          width="300">
+        <img
+          id="myimg2"
+          src=""
+          height="300"
+          width="300">
+        <img
+          id="myimg3"
+          src=""
+          height="300"
+          width="300">
+        <img
+          id="myimg4"
+          src=""
+          height="300"
+          width="300">
+        <img
+          id="myimg5"
+          src=""
+          height="300"
+          width="300">
+        <img
+          id="myimg6"
+          src=""
+          height="300"
+          width="300">
+        <img
+          id="myimg7"
+          src=""
+          height="300"
+          width="300">
+        <img
+          id="myimg8"
+          src=""
+          height="300"
+          width="300">
+        <img
+          id="myimg9"
+          src=""
+          height="300"
+          width="300">
+
         <!-- iFrame END -->
       </v-flex>
       <v-snackbar v-model="snackbarItem" top color="error">
@@ -51,7 +98,10 @@ export default {
     return {
       common,
       rules,
+      pictures: {},
 
+      items: [
+      ],
       loader: true,
       editDialog: false,
 
@@ -80,7 +130,7 @@ export default {
 
       ],
 
-      items: [],
+      picUrl:'',
 
       selectPagePerCount: [{text: '10', value: 10}, {text: '20', value: 20}, {text: '30', value: 30}, {
         text: '50',
@@ -153,22 +203,57 @@ export default {
     async downloadPhoto() {
       let storage = firebase.storage()
       let storageRef = storage.ref()
-
-      storageRef.child('img/20210605_170350.jpg').getDownloadURL().then(function(url) {
+      let pathRef = storageRef.child('img/CCTV_20210606_115206.jpg')
+      console.log(pathRef)
+      pathRef.getDownloadURL().then(function(url) {
         // `url` is the download URL for 'images/stars.jpg'
-
         // This can be downloaded directly:
-        let xhr = new XMLHttpRequest()
-        xhr.responseType = 'blob'
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
         xhr.onload = function(event) {
-          let blob = xhr.response
+          let blob = xhr.response;
         }
         xhr.open('GET', url);
         xhr.send();
 
+        // Or inserted into an <img> element:
+        //let img = document.getElementById('myimg');
+        //img.src = url
       }).catch(function(error) {
         // Handle any errors
       })
+
+
+      //아이템 목록 꺼내오기
+      let listRef = storageRef.child('img');
+      let pictureUrls = []
+      pictureUrls[0] = 1
+      console.log(pictureUrls[0])
+      let index = 0
+      // Find all the prefixes and items.
+      listRef.listAll().then(function(res) {
+        res.prefixes.forEach(function(folderRef) {
+          // All the prefixes under listRef.
+          // You may call listAll() recursively on them.
+          console.log(folderRef)
+        })
+        res.items.forEach(function(itemRef) {
+          // All the items under listRef.
+          //console.log(itemRef)
+          itemRef.getDownloadURL().then(function(url)  {
+            pictureUrls.push(url)
+            index += 1
+            //console.log(index)
+            console.log(pictureUrls[index])
+            let img = document.getElementById("myimg"+index);
+            img.src = url
+          })
+
+        })
+      }).catch(function(error) {
+        // Uh-oh, an error occurred!
+      })
+      console.log("OK")
     },
 
     newDialog() {

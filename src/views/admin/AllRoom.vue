@@ -84,7 +84,6 @@ export default {
         {text: '습도', value: 'hum', align: 'center', divider:true},
         {text: '미세먼지', value: 'dust', align: 'center', divider:true},
         {text: '가스', value: 'gas', align: 'center', divider:true},
-        {text: '측정 시간', value: 'measureTime', align: 'center'},
 
       ],
 

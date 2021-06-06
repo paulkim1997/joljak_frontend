@@ -147,7 +147,7 @@ export default {
             text: '관리자 옵션',
             model: true,
             children: [
-              {icon: 'accessibility', text: '임직원', toRoute: '/emp'},
+              // {icon: 'accessibility', text: '임직원', toRoute: '/emp'},
               {icon: 'vpn_key', text: '비밀번호 변경하기', toRoute: '/changePwd'},
             ],
           },
