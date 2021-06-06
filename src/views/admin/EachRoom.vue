@@ -34,7 +34,6 @@
                     <v-list-item-title class="headline">
                       온도
                     </v-list-item-title>
-                    <v-list-item-subtitle>측정 시간: {{ information.measureTime }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
 
@@ -76,7 +75,6 @@
                     <v-list-item-title class="headline">
                       습도
                     </v-list-item-title>
-                    <v-list-item-subtitle>측정 시간: {{ information.measureTime }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
 
@@ -120,7 +118,6 @@
                     <v-list-item-title class="headline">
                       미세먼지
                     </v-list-item-title>
-                    <v-list-item-subtitle>측정 시간: {{ information.measureTime }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
 
@@ -161,7 +158,6 @@
                     <v-list-item-title class="headline">
                       가스
                     </v-list-item-title>
-                    <v-list-item-subtitle>측정 시간: {{ information.measureTime }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
                 <v-card-text>
